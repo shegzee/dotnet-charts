@@ -1,0 +1,132 @@
+﻿@page
+@model TransChartDemo.Pages.ChartArrayBasicChartsJSModel
+@{
+
+}
+<div class="text-center">
+    <h1 class="display-4">Charts.js Demo</h1>
+    <p>Integrating Charts.js in ASP.NET Core - using ChartsJS</a>.</p>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    Bar Chart
+                </div>
+                <div class="card-body">
+                    <canvas id="bar" class="my-4 h-25"></canvas>
+                </div>
+                <div class="card-footer">
+                    Transactions across top-tier banks
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    Pie Chart
+                </div>
+                <div class="card-body">
+                    <canvas id="pie" class="my-4 h-25"></canvas>
+                </div>
+                <div class="card-footer">
+                    Transactions among top-tier banks ;-)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script type="text/javascript">
+        var jsonData = '@Html.Raw(ViewData["allBankData"])';
+        var values = JSON.parse(jsonData);
+        //var arr = [];
+        // $.each(values, function (i, val) {
+        //     var bankData = {};
+        //     bankData.color = val.color;
+        //     bankData.value = val.value;
+        //     bankData.label = val.label;
+        //     arr.push(bankData);
+        // });
+
+        var colours = {
+            'GTB': 'rgba(200, 100, 0, 0.5)',
+            'UBA': 'rgba(200, 50, 50, 0.5)',
+            'ZIB': 'rgba(100, 50, 50, 0.5)',
+            'FBN': 'rgba(50, 50, 200, 0.5)',
+            'ACC': 'rgba(50, 200, 100, 0.5)',
+        }
+
+        var barChartCanvas = document.getElementById('bar').getContext('2d');
+        //var barChart = new Chart(barChartCanvas).Bar(arr);
+
+        var barChart = new Chart(barChartCanvas, {
+            type: 'bar',
+            data: {
+                labels: values.map(x => x.Name),
+                datasets: [{
+                    //barThickness: 50,
+                    label: 'Bank Transactions',
+                    data: values.map(x => 
+                        x.TransactionsCount
+                    ),
+                    backgroundColor: values.map(x =>
+                        x.Colour
+                    )
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                plugins: {
+                    title: 'Bank Transactions',
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        var pieChartCanvas = document.getElementById('pie').getContext('2d');
+        var pieChart = new Chart(pieChartCanvas, {
+            type: 'pie',
+            data: {
+                labels: values.map(x => x.Name),
+                datasets: [{
+                    label: 'Pie Chart',
+                        data: values.map(x =>
+                            x.TransactionsCount
+                        ),
+                        backgroundColor: values.map(x =>
+                            colours[x.Name]
+                        )
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }]
+                }
+            }
+        })
+
+
+        function random_rgba() {
+            var o = Math.round,
+                r = Math.random,
+                s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        }
+    </script>
+}

@@ -1,0 +1,138 @@
+﻿@page
+@model TransChartDemo.Pages.ChartArrayBasicHighchartsModel
+@{
+
+}
+<div class="text-center">
+    <h1 class="display-4">Charts.js Demo</h1>
+    <p>Integrating Charts.js in ASP.NET Core - using Highcharts</a>.</p>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    Bar Chart
+                </div>
+                <div class="card-body">
+                    <div id="bar" class="my-4 h-25"></div>
+                </div>
+                <div class="card-footer">
+                    Transactions across top-tier banks
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    Pie Chart
+                </div>
+                <div class="card-body">
+                    <div id="pie" class="my-4 h-25"></div>
+                </div>
+                <div class="card-footer">
+                    Transactions among top-tier banks ;-)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script type="text/javascript">
+        var jsonData = '@Html.Raw(ViewData["allBankData"])';
+        var values = JSON.parse(jsonData);
+        //var arr = [];
+        // $.each(values, function (i, val) {
+        //     var bankData = {};
+        //     bankData.color = val.color;
+        //     bankData.value = val.value;
+        //     bankData.label = val.label;
+        //     arr.push(bankData);
+        // });
+
+        var colours = {
+            'GTB': 'rgba(200, 100, 0, 0.5)',
+            'UBA': 'rgba(200, 50, 50, 0.5)',
+            'ZIB': 'rgba(100, 50, 50, 0.5)',
+            'FBN': 'rgba(50, 50, 200, 0.5)',
+            'ACC': 'rgba(50, 200, 100, 0.5)',
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const chart = Highcharts.chart('bar', {
+                chart: {
+                    type: 'column'
+                },
+                plotOptions: {
+                    column: {
+                        colorByPoint: true,
+                        colors: values.map(x =>
+                            x.Colour
+                        )
+                    }
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: values.map(x => x.Name)
+                },
+                yAxis: {
+                    title: {
+                        text: 'Bank Transactions'
+                    }
+                },
+                series: [{
+                    name: 'Bank Transactions',
+                    data: values.map(x =>
+                        x.TransactionsCount
+                    ),
+                    colors: values.map(x =>
+                        x.Colour
+                    )
+                }]
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            Highcharts.chart('pie', {
+                chart: {
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Bank Transactions'
+                },
+                tooltip: {
+                    valueSuffix: ''
+                },
+                subtitle: {
+                    text:
+                        'Bank Transactions for 2023'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}: {point.percentage:.1f}%'
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [
+                    {
+                        name: 'Transactions',
+                        colorByPoint: true,
+                        data: values.map(x => ({ name: x.Name, y: x.TransactionsCount, color: x.Colour }))
+                    }
+                ]
+            });
+        })
+
+    </script>
+}

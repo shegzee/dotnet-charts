@@ -5,11 +5,11 @@ using TransChartDemo.Repositories;
 
 namespace TransChartDemo.Pages
 {
-    public class ChartArrayBasicModel : PageModel
+    public class ChartArrayBasicChartsJSModel : PageModel
     {
         private readonly IBankDataRepository bankDataRepository;
 
-        public ChartArrayBasicModel(IBankDataRepository _bankDataRepository)
+        public ChartArrayBasicChartsJSModel(IBankDataRepository _bankDataRepository)
         {
             bankDataRepository = _bankDataRepository;
         }

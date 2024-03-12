@@ -8,9 +8,9 @@ namespace TransChartDemo.Repositories
         {
             new BankData { Id = 1, Name = "GTB", Colour = "Orange", TransactionsCount = 1923 },
             new BankData { Id = 2, Name = "UBA", Colour = "Red", TransactionsCount = 2011 },
-            new BankData { Id = 3, Name = "FBN", Colour = "Blue", TransactionsCount = 1820 },
+            new BankData { Id = 3, Name = "FBN", Colour = "LightBlue", TransactionsCount = 1820 },
             new BankData { Id = 4, Name = "ZIB", Colour = "Black", TransactionsCount = 1500 },
-            new BankData { Id = 4, Name = "ACC", Colour = "Lemon", TransactionsCount = 1947 }
+            new BankData { Id = 4, Name = "ACC", Colour = "LightGreen", TransactionsCount = 1947 }
         };
         public void AddBankData(BankData bankData)
         {
